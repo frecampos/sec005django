@@ -1,0 +1,95 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+    <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+{% endblock css %}
+
+{% block contenido %}
+        <section id="bienvenido">
+
+            <h2>Formulario de Inscripcion para Adopcion</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt pariatur odit inventore consectetur
+                quisquam minus facere excepturi atque quibusdam! Consectetur aliquid nihil possimus alias? Facilis alias
+                reiciendis iure libero quidem?</p>
+        </section>
+
+        <section id="formu">
+
+            <form class="form-registro" action="" method="POST" onsubmit="return valida()">
+
+                <h2 class="form-titulo">Creacion de Cuenta</h2>
+
+                <div class="contenedor-imput">
+
+                    <input class="col-48" type="text" name="txtRut" id="txtRut" placeholder="ingrese rut ej. 12555888-5" required minlength="9" maxlength="10">
+                    <input class="col-48" type="text" name="txtNombreCompleto" id="txtNombreCompleto" placeholder="ingrese nombre y apellido" required minlength="3" maxlength="20" pattern="[A-Za-z ]{3,20}" title="ingrese un nombre valido">
+                    <input class="col-48" type="date" name="txtFechaNaci" id="txtFechaNaci" required>
+                    <input class="col-48" type="email" name="txtEmail" id="txtEmail" placeholder="ingrese email" required minlength="10">
+                    <input class="col-48" type="text" name="txtUsuario" id="txtUsuario" placeholder="ingrese usuario" required minlength="5" maxlength="15">
+                    <input class="col-48" type="password" name="txtPass" id="txtPass" placeholder="ingrese password" required minlength="8" maxlength="12">
+                    <input class="col-100" type="text" name="txtFono" id="txtFono" placeholder="ingrese telefono" required pattern="[0-9]{9}" title="solo un numeros ej. 232558475">
+
+                    <input class="btn-enviar" type="submit" value="Registrar">
+                    <input type="button" value="Grabar" onclick="grabar()">
+                    <input type="button" value="Listar" onclick="listar()">
+                    <input type="button" value="JQUERY" id="btnJquery">
+                </div>
+            </form>
+
+        </section>
+{% endblock contenido %}
+
+{% block js %}
+    <!-- sector scripts de java -->
+    <script src="{% static 'js/usuario.js' %}"></script>
+    <script>
+        var arreglo =new Array();
+        var index = 0;
+
+        function grabar() {
+            var rut = document.getElementById('txtRut').value;
+            var nombre = document.getElementById('txtNombreCompleto').value;
+            var fecha = document.getElementById('txtFechaNaci').value;
+            usu = new usuario();
+            usu.setRut(rut);
+            usu.setNombre(nombre);
+            usu.setFecha(fecha);
+            alert(usu.imprimir());
+            arreglo[index]= JSON.stringify(usu);
+            localStorage.setItem('registro',arreglo);
+            alert('grabo');
+            index++;
+        }
+        function listar() {
+            var tabla = "<table border=1>";
+            tabla = tabla + "<tr>  <td>Rut</td> <td>Nombre</td> <td>Fecha</td> </tr>";
+            var arreglo_temp= new Array();
+            var datos = localStorage.getItem('registro');
+            datos = datos.split("},{").join("};{"); // reemplazar el },{ por };{
+            arreglo_temp = datos.split(";");
+            for (let index = 0; index < arreglo_temp.length; index++) {
+                var reg = arreglo_temp[index];
+                var usu = JSON.parse(reg);
+                tabla=tabla+"<tr>  <td>"+usu.rut+"</td> <td>"+usu.nombre+"</td> <td>"+usu.fecha+"</td> </tr>";               
+            }
+            tabla=tabla+"</table>";
+            document.getElementById('listado').innerHTML=tabla;
+        }
+    </script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <div id="listado">
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            $("#btnJquery").click(function() {
+                var rut = $("#txtRut").val();
+                alert('su rut es:'+rut);
+            });
+        
+        });
+    </script>
+{% endblock js %}

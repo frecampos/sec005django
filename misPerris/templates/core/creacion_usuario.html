@@ -1,0 +1,57 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+<script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+{% endblock css %}
+
+{% block contenido %}
+<section id="bienvenido">
+
+    <h2>Creacion de Nueva Cuenta Usuario</h2>
+
+</section>
+
+<section id="formu">
+
+    <form class="form-registro" action="{% url 'CREARUSUARIO' %}" method="POST" onsubmit="return validarPass()">
+        {% csrf_token %}
+        <h2 class="form-titulo">Creacion de Cuenta</h2>
+
+        <div class="contenedor-input">
+            <input class="col-48" type="text" name="txtNombre" id="txtNombre" placeholder="ingrese nombre"
+                required minlength="3" maxlength="20">
+            <input class="col-48" type="text" name="txtApellido" id="txtApellido" required
+                placeholder="ingrese apellido">
+            <input class="col-48" type="text" name="txtUsuario" id="txtUsuario" required
+                placeholder="ingrese nombre de usuario">
+
+            <input class="col-48" type="email" name="txtEmail" id="txtEmail" placeholder="ingrese email" required
+                minlength="10">
+            <input class="col-48" type="password" name="txtPass1" id="txtPass1" placeholder="ingrese password" required
+                minlength="8" maxlength="12">
+            <input class="col-48" type="password" name="txtPass2" id="txtPass2"
+                placeholder="ingrese nuevamente la password" required minlength="8" maxlength="12">
+
+            <input class="btn-enviar" type="submit" value="Registrar">
+            <input class="btn-enviar" type="reset" value="Limpiar">
+        </div>
+    </form>
+    <div style="text-align: center;color: red;font-size: xx-large;">
+        {{mensaje}}
+    </div>
+</section>
+<script>
+    function validarPass() {
+        var p1 = document.getElementById("txtPass1").value;
+        var p2 = document.getElementById("txtPass2").value;
+        if (p1!=p2) {
+            alert("contraseñas distintas");
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock contenido %}

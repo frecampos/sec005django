@@ -1,0 +1,37 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+    <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+{% endblock css %}
+
+{% block contenido %}
+        <section id="bienvenido">
+
+            <h2>Login de Acceso</h2>
+            
+        </section>
+
+        <section id="formu">
+
+            <form class="form-registro" action="{% url 'LOGIN' %}" method="POST">
+                {% csrf_token %}
+                <h2 class="form-titulo">Login</h2>
+
+                <div class="contenedor-imput">
+
+                    <input class="col-48" type="text" name="txtNombre" id="txtNombre" placeholder="ingrese nombre y apellido" required minlength="3" maxlength="20">
+                    <input class="col-48" type="password" name="txtPass" id="txtPass" placeholder="ingrese password" required minlength="8" maxlength="12">
+                 
+                    <input class="btn-enviar" type="submit" value="Ingresar">
+                  
+                </div>
+            </form>
+            <div style="text-align: center;color: red; font-size: xx-large;">
+                {{mensaje}}
+            </div>
+        </section>
+{% endblock contenido %}
+

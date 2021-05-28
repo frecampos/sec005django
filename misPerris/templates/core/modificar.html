@@ -1,0 +1,60 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+<script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+{% endblock css %}
+
+{% block contenido %}
+<section id="bienvenido">
+
+    <h2>Administracion de Mascotas</h2>
+</section>
+
+<section id="formu">
+
+    <form class="form-registro" action="{% url 'MODI' %}" enctype="multipart/form-data" method="POST"
+        onsubmit="return valida()">
+        {% csrf_token %}
+        <h2 class="form-titulo">Modificacion de Mascotas</h2>
+        <div class="contenedor-input">
+
+            <input class="col-48" type="text" name="txtNombre" id="txtNombre" placeholder="ingrese nombre de la mascota"
+                required minlength="3" maxlength="20" pattern="[A-Za-z ]{3,20}" title="ingrese un nombre valido" value="{{mascota.nombre}}">
+            <input class="col-48" type="number" name="txtEdad" id="txtEdad" required value="{{mascota.edad}}">
+            <textarea name="txtDesc" class="col-100" style="margin-top: 15px;margin-bottom: 15px;" id="txtDesc" cols="30" rows="10">{{mascota.descripcion}}</textarea>
+            
+            Imagen Actual: <a href="{{mascota.imagen.url}}">{{mascota.imagen.url}}</a>
+
+            <input class="col-100" style="margin-top: 15px;" type="file" name="txtImg" id="txtImg">
+            <select class="col-100" style="margin-top: 15px;padding: 15px;margin-bottom: 15px;" name="cboTipo" id="cboTipo">
+                {% for item in tipos %}
+                    {% if item.nombre != mascota.tipo.nombre %}
+                        <option value="{{item.nombre}}">{{item.nombre}}</option>                        
+                    {% else %}
+                        <option value="{{item.nombre}}" selected>{{item.nombre}}</option>
+                    {% endif %}                  
+                {% endfor %}
+            </select>
+            <input class="btn-enviar" type="submit" value="Modificar">
+            <input class="btn-enviar" type="button" value="Cancelar">
+
+        </div>
+    </form>
+    
+    <div style="text-align: center;color: red;font-size: xx-large;">
+        {{mensaje}}
+    </div>
+
+</section>
+
+{% endblock contenido %}
+
+{% block js %}
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+{% endblock js %}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Perris</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <script src="js/sweetalert2.all.min.js"></script>
+    <script src="js/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <!-- cabecera -->
+    <header>
+        <div class="contenedor">
+            <h1 class="icon-guidedog">Mis Perris</h1>
+            <!-- visualizar menu al momento de ejecutar responsive-->
+            <input type="checkbox" name="" id="menu-bar">
+            <label class="icon-cc-visa" for="menu-bar"></label>
+            <!-- menu -->
+            <nav class="menu">
+                <a href="index.html">Home</a>
+                <a href="galeria.html">Galeria</a>
+                <a href="formulario.html">Formulario</a>
+                <a href="">Quienes Somos</a>
+            </nav>
+        </div>
+    </header>
+    <!-- contenido principal -->
+    <main>
+        <section id="banner">
+            <img src="img/perro1.jpg" alt="">
+            <div class="contenedor">
+                <h2>Mascotas felices en mis perris</h2>
+                <p>Cual es la mejor mascota para usted</p>
+                <a href="">Leer Mas</a>
+            </div>
+        </section>
+
+        <section id="bienvenido">
+
+            <h2>Formulario de Inscripcion para Adopcion</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt pariatur odit inventore consectetur
+                quisquam minus facere excepturi atque quibusdam! Consectetur aliquid nihil possimus alias? Facilis alias
+                reiciendis iure libero quidem?</p>
+        </section>
+    
+        <script>
+            $(document).ready(function() {
+                
+                $("#formulario").submit(function(event) {
+                    var validaciones = valida();
+                    if (validaciones==false) {
+                        alert("Upps..");
+                        event.preventDefault();//detener el evento de envio "Submit"
+                        return false;
+                    }
+                    alert("Formulario Validado");
+                });
+            });
+        </script>
+        <section id="formu">
+
+            <form class="form-registro" id="formulario" action="" method="POST">
+
+                <h2 class="form-titulo">Creacion de Cuenta</h2>
+
+                <div class="contenedor-imput">
+
+                    <input class="col-48" type="text" name="txtRut" id="txtRut" placeholder="ingrese rut ej. 12555888-5" required minlength="9" maxlength="10">
+                    <input class="col-48" type="text" name="txtNombreCompleto" id="txtNombreCompleto" placeholder="ingrese nombre y apellido" required minlength="3" maxlength="20" pattern="[A-Za-z ]{3,20}" title="ingrese un nombre valido">
+                    <input class="col-48" type="date" name="txtFechaNaci" id="txtFechaNaci" required>
+                    <input class="col-48" type="email" name="txtEmail" id="txtEmail" placeholder="ingrese email" required minlength="10">
+                    <input class="col-48" type="text" name="txtUsuario" id="txtUsuario" placeholder="ingrese usuario" required minlength="5" maxlength="15">
+                    <input class="col-48" type="password" name="txtPass" id="txtPass" placeholder="ingrese password" required minlength="8" maxlength="12">
+                    <input class="col-100" type="text" name="txtFono" id="txtFono" placeholder="ingrese telefono" required pattern="[0-9]{9}" title="solo un numeros ej. 232558475">
+
+                    <input class="btn-enviar" type="submit" value="Registrar">
+                    <input class="btn-enviar" type="reset" value="Limpiar">
+                </div>
+            </form>
+
+        </section>
+
+    <!-- sector scripts de java -->
+    <script src="js/scripts.js"></script>
+    <div id="listado">
+
+    </div>
+    
+</body>
+
+
+</html>

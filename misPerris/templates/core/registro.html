@@ -1,0 +1,166 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+<script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+{% endblock css %}
+
+{% block contenido %}
+<section id="bienvenido">
+
+    <h2>Administracion de Mascotas</h2>
+    <h3>Usuario: <b>{{user.username}}</b> </h3>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt pariatur odit inventore consectetur
+        quisquam minus facere excepturi atque quibusdam! Consectetur aliquid nihil possimus alias? Facilis alias
+        reiciendis iure libero quidem?</p>
+</section>
+
+<section id="formu">
+
+    <form class="form-registro" action="{% url 'REG' %}" enctype="multipart/form-data" method="POST"
+        onsubmit="return valida()">
+        {% csrf_token %}
+        <h2 class="form-titulo">Ingreso de Mascotas</h2>
+        <div class="contenedor-input">
+
+            <input class="col-48" type="text" name="txtNombre" id="txtNombre" placeholder="ingrese nombre " required
+                minlength="3" maxlength="20" pattern="[A-Za-z ]{3,20}" title="ingrese un nombre valido">
+            <input class="col-48" type="number" name="txtEdad" id="txtEdad" required placeholder="ingrese edad">
+            <textarea name="txtDesc" class="col-100" style="margin-top: 15px;" id="txtDesc" cols="30"
+                rows="10"></textarea>
+            <input class="col-100" style="margin-top: 15px;" type="file" name="txtImg" id="txtImg">
+            <select class="col-100" style="margin-top: 15px;padding: 15px;margin-bottom: 15px;" name="cboTipo"
+                id="cboTipo">
+                {% for item in tipos %}
+                <option value="{{item.nombre}}">{{item.nombre}}</option>
+                {% endfor %}
+            </select>
+
+            <input class="btn-enviar" type="submit" value="Registrar">
+            <input class="btn-enviar" type="reset" value="Limpiar">
+
+        </div>
+    </form>
+
+    <div style="text-align: center;color: red;font-size: xx-large;">
+        {{mensaje}}
+    </div>
+
+</section>
+
+<!-- titulo del listado -->
+<div style="text-align: center;font-size: xx-large;">Listado de Mascotas (Cantidad: {{cantidad}} )</div>
+
+<!-- tabla del listado de mascotas-->
+<div id="listado" style="margin:20px">
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Descripcion</th>
+                <th>Imagen</th>
+                <th>Categoria</th>
+                <th>Operaciones</th>
+                <th>Publicar</th>
+                <th>Comentario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reg in masc %}
+            <tr>
+                <td>{{reg.nombre}}</td>
+                <td>{{reg.edad}}</td>
+                <td>{{reg.descripcion}}</td>
+                <td>
+                    <img src='{{reg.imagen.url}}' width="150px" height="150px">
+                </td>
+                <td>{{reg.tipo.nombre}}</td>
+                <td>
+                    <button class="btn btn-danger" onclick="eliminar('{{reg.nombre}}')">Eliminar</button>
+                    <button class="btn btn-warning" onclick="modificar('{{reg.nombre}}')">Modificar</button>
+                    <button class="btn btn-primary" onclick="galeria('{{reg.nombre}}')" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Agregar
+                        Imagen</button>
+                </td>
+                <td>
+                    {% if reg.publicar %}
+                    PUBLICADO
+                    {% else %}
+                    <DIV style="color: red;"> NO PUBLICADO</DIV>
+                    {% endif %}
+                </td>
+                <td>
+                    {{reg.comentario}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- ventana modal -->
+<div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Imagen a Galeria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form action="{% url 'INSERTARG' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div>
+                            Agregar imagen a la galeria de la mascota
+                            <div style="color: red;font-size: x-large;" id="nom_masc"></div>
+                        </div>
+                        <input type="file" name="txtImg" id="txtImg">
+                        <input type="hidden" name="txtMascota" id="txtMascota">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Grabar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
+
+{% block js %}
+<script>
+    function eliminar(nombre) {
+        Swal.fire({
+            title: 'Desea eliminar la mascota ' + nombre + ' ?',
+            showDenyButton: true,
+            confirmButtonText: `Eliminar`,
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/eliminar_mascota/' + nombre + '/';
+            }
+        })
+    }
+    function modificar(nombre) {
+        location.href = '/modificar_mascota/' + nombre + '/';
+    }
+    function galeria(nombre) {
+        document.getElementById("nom_masc").innerHTML = nombre;
+        document.getElementById("txtMascota").value = nombre;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+
+{% endblock js %}

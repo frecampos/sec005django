@@ -1,0 +1,64 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'dist/css/lightbox.min.css' %}">
+{% endblock css %}
+
+{% block contenido %}
+<section id="bienvenido">
+
+    <h2>Galeria de Imagenes</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt pariatur odit inventore consectetur
+        quisquam minus facere excepturi atque quibusdam! Consectetur aliquid nihil possimus alias? Facilis alias
+        reiciendis iure libero quidem?</p>
+
+    <form action="{% url 'FILTROT' %}" method="post">
+        {% csrf_token %}
+        Categoria de Mascota:
+        <select name="cboTipo" id="cboTipo">
+            {% for reg in tipos %}
+            <option>{{reg.nombre}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Filtrar">
+    </form>
+
+    <form action="{% url 'FILTROPC' %}" method="post">
+        {% csrf_token %}
+        Palabras Claves:
+        <input type="text" name="txtFiltrar" id="txtFiltrar">
+        <input type="submit" value="Buscar">
+    </form>
+
+    <form action="{% url 'BUSCARNOMBRE' %}" method="post">
+        {% csrf_token %}
+        Buscar por Nombre de Mascota:
+        <input type="text" name="txtNombre" id="txtNombre">
+        <input type="submit" value="Buscar">
+    </form> 
+</section>
+
+<section id="blog">
+    <div class="contenedor">
+        {% for reg in mascotas %}
+        <article>
+            <a href="{{reg.imagen.url}}" data-lightbox="perros" data-title="busca un hogar">
+                <img src="{{reg.imagen.url}}" alt="">
+            </a>
+            <h4>{{reg.nombre}}</h4>
+            <h5>
+                <a href="{% url 'MOSTRAR' reg.nombre %}">Ver Ficha</a>
+            </h5>
+        </article>
+        {% endfor %}
+    </div>
+    <div style="text-align: center;font-size: xx-large;">
+        {{cant}}
+    </div>
+</section>
+{% endblock contenido %}
+
+{% block js %}
+<script src="{% static 'dist/js/lightbox-plus-jquery.min.js' %}"></script>
+{% endblock js %}

@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Perris</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    {% block css %}
+    
+    {% endblock css %}
+</head>
+<body>
+    <!-- cabecera -->
+    <header>
+        <div class="contenedor">
+            <h1 class="icon-guidedog">Mis Perris</h1>
+            <!-- visualizar menu al momento de ejecutar responsive-->
+            <input type="checkbox" name="" id="menu-bar">
+            <label class="icon-cc-visa" for="menu-bar"></label>
+            <!-- menu -->
+            <nav class="menu">
+                <a href="{% url 'INDEX' %}">Home</a>
+                <a href="{% url 'GALE' %}">Galeria</a>
+                <a href="{% url 'FORMU' %}">Formulario</a>
+                <a href="">Quienes Somos</a>
+                <a href="">Contacto</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'ADMADOPTAR' %}">Mis Mascotas Adoptadas</a> 
+                    <a href="{% url 'REG' %}">Adm. Mascotas</a>                
+                    <a href="{% url 'LOGOUT' %}">Cerrar Sesion</a>
+                    <a href="">Bienvenido: {{user.first_name}} {{user.last_name}}</a>
+                {% else %}
+                    <a href="{% url 'LOGIN' %}">Login</a>
+                    <a href="{% url 'CREARUSUARIO' %}">Crear Usuario</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <!-- contenido principal -->
+    <main>
+        <section id="banner">
+            <img src="{% static 'img/perro1.jpg' %}" alt="">
+            <div class="contenedor">
+                <h2>Mascotas felices en mis perris</h2>
+                <p>Cual es la mejor mascota para usted</p>
+                <a href="">Leer Mas</a>
+            </div>
+        </section>
+    <!-- region editable -->
+    {% block contenido %}
+    
+    {% endblock contenido %}
+    </main>
+
+    {% block js %}
+    
+    {% endblock js %}
+    <!-- pie de pagina -->
+    <footer>
+        <div class="contenedor">
+            <h3>Mis Perris - Diseño Web</h3>
+        </div>
+    </footer>
+
+</body>
+</html>

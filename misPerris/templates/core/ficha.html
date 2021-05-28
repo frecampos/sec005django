@@ -1,0 +1,66 @@
+{% extends "core/plantilla.html" %}
+{% load static %}
+{% block css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+{% endblock css %}
+{% block contenido %}
+<section id="bienvenido">
+    <h2>Nuestra Mascota</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt pariatur odit inventore consectetur quisquam minus
+        facere excepturi atque quibusdam! Consectetur aliquid nihil possimus alias? Facilis alias reiciendis iure libero
+        quidem?</p>
+
+</section>
+
+<section id="blog">
+    <h3>Informacion de Nuestra Mascota Para Adopta</h3>
+    <div class="contenedor">
+        <article>
+            <img src="{{mascota.imagen.url}}" alt="">
+
+        </article>
+
+        <!-- galeria de imagenes -->
+        <article style="width: 250px;height: 250px;margin-top: 15px;">
+
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{% static 'img/logo.jpg'%}" width="250px" height="250px" class="d-block w-100"
+                            alt="...">
+                    </div>
+                    {% for reg in galeria %}
+                    <div class="carousel-item">
+                        <img src="{{reg.imagen.url}}" width="250px" height="250px" class="d-block w-100" alt="...">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </article>
+
+    </div>
+    <h4>Nombre:{{mascota.nombre}}</h4>
+    <h4>Edad:{{mascota.edad}}</h4>
+    <h4>Descripcion:{{mascota.descripcion}}</h4>
+    <h4>Categoria:{{mascota.tipo.nombre}}</h4>
+    <!-- boton de adoptar-->
+    {% if user.is_authenticated %}
+    <p>Usuario {{user.first_name}} desea adoptarme</p>
+    <button onclick="javascript:location.href='/adoptar/{{mascota.nombre}}/'">Adoptar</button>
+    {% endif %}
+
+    <!-- mensaje -->
+    <div style="text-align: center;color: red;font-size: xx-large;">
+        {{mensaje}}
+    </div>
+
+
+</section>
+
+{% endblock contenido %}
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+{% endblock js %}
